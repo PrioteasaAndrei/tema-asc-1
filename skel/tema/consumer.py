@@ -40,22 +40,17 @@ class Consumer(Thread):
 
     def run(self):
         for cart in self.carts:
-           ## print("CART",cart)
             for op in cart:
-                ##print('OP',op)
                 if op['type'] == 'add':
                     for i in range(op["quantity"]):
                         while True:
                             ret =  self.marketplace.add_to_cart(self.cart_id,op['product'])
                             if ret == True:
-                               # print('Consumer added to cart: ',op['product'])
                                 break
                             else:
-                               # print('Consumer didnt find the product - wait')
                                 sleep(self.retry_wait_time)
                             
                 elif op['type'] == 'remove':
-                    #print('Consumer removed from cart: ',op['product'])
                     
                     for i in range(op["quantity"]):
                         self.marketplace.remove_from_cart(self.cart_id,op['product'])

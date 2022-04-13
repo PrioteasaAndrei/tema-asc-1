@@ -1,1 +1,0 @@
-deci fac o lista si fac pe ea lockuri si etc 

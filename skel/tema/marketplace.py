@@ -27,11 +27,6 @@ class Marketplace:
     ## -77 means the product is not reserved
 
 
-    ## logging 
-
-   ## my_logger = logging.basicConfig(filename='marketplace_logger',level=logging.INFO)
-
-
 
 
     def __init__(self, queue_size_per_producer):

@@ -44,19 +44,15 @@ class Producer(Thread):
 
     def run(self):
         while True:
-            ##print('PRODUCTS:',self.products)
             for product in self.products:
-                ##print("PRODUCT",product,product[2])
 
                 for i in range(product[1]):
                     while True:
                         ret =  self.marketplace.publish(self.producer_id,product[0])
                         if ret == False:
-                          #  print('Producer queue full')
                             sleep(self.republish_wait_time)
                         else:
                             break
-                   # print('Succesfully published: ',product[0])
                     sleep(product[2])
 
 
