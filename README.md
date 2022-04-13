@@ -1,26 +1,51 @@
-# Arhitectura Sistemelor de calcul - Tema 1 - Marketplace, Martie 2021
+Nume: Prioteasa Cristi Andrei
+Grupă: 332 CC 
 
-# Enunt
-http://ocw.cs.pub.ro/courses/asc/teme/tema1
+# Tema 1
 
-# Testare
+Organizare
+-
+1. Explicație pentru soluția aleasă:
+
+   Am folosit lock-uri pentru metodele : place_order,remove_from_cart,add_to_cart,publish,register_producer.
+   Marketul tine un dictionar pt produse de forma <producer_id,(produs,id_celui_care_a_rezervat_produsul)> default id_celui_care_a_rezervat_produsul va fi -77, insemnand ca produsul nu a fost rezervat de niciun consumer si nu se afla in niciun cos.
+   Marketul tine un dictionar pt basketuri de forma <cart_id,[(produs,id_producator)]>. Tin tuplu cu un id_producator sa stiu in caz ca vreau sa returnez produsul inainte de a fi cumparat in ce lista il voi gasi. A rezerva un produs inseamna a il adauga in cos si a ii schimba id_celui_care_a_rezervat_produsul din -77 in id_cos consumer.
+
+   La o publicare de produs se adauga in lista corespunzatoare acelui producer , deja inregistrat  cu (produs,-77).
+   Cand un consumer face un add_to_cart acel produs va fi cautat si va deveni rezervat ca (produs,id_cos_consumer) si va ramane in lista acelui producator, va fi scos doar la place_order
+
+   remove_from_cart gaseste produsul si il face iar de forma (produs,-77) adica disponibil pentru alti consumeri.
+
+   Am implementat logging, nu si unittesting.
+
+* De făcut referință la abordarea generală menționată în paragraful de mai sus. Aici se pot băga bucăți de cod/funcții - etc.
+* Consideri că tema este utilă?
+* Consideri implementarea naivă, eficientă, se putea mai bine?
+
+***Opțional:***
 
 
-* Folositi scriptul run_tests.sh.
-* Schimbați înainte de a îl rula variabila PYTHON din interiorul lui cu path-ul de pe sistemul vostru
-* Fișierele de input și output-referință se află în directorul tests/
-   * tot în acest director se generează și fisierul output al rulării temei folosind test.py
-* Pentru a verifica partea de code-style, trebuie să aveți instalat pylint
-   * am oferit în schelet fișierul pylintrc cu configurarea acestui tool
-   * puteți da comanda pylint pe sursele voastre sau să decomentați linia pentru pylint din scriptul run_tests.sh
+* De menționat cazuri speciale, nespecificate în enunț și cum au fost tratate.
 
-Directorul test-gen conține scripturi pentru generarea testelor.
 
-* README_TESTS - descrie formatul json al fișierelor de intrare
-* test_generator.py - generează fișierele aferente unui test
-* test_utils.py - constante utilizate în test_generator
-* generate_tests.sh - generează cele 10 teste oferite în schelet și pentru care se va oferi punctajul temei
+Implementare
+-
 
-Puteți să testați tema și pe teste proprii create folosind scriptul test_generator.py
+* De specificat dacă întregul enunț al temei e implementat
+* Dacă există funcționalități extra, pe lângă cele din enunț - descriere succintă + motivarea lor
+* De specificat funcționalitățile lipsă din enunț (dacă există) și menționat dacă testele reflectă sau nu acest lucru
+* Dificultăți întâmpinate
+* Lucruri interesante descoperite pe parcurs
 
-Informații despre conținutul fișierelor de intrare/ ieșire se regăsesc [aici](https://bitbucket.org/ASC-admin/asc/src/master/assignments/1-marketplace/skel/test-gen/README_TESTS.md).
+
+Resurse utilizate
+
+Laburi asc, documentatie python , gfg 
+
+Git
+-
+1. Link către repo-ul de git
+
+Repo-ul e privat, ask for read permission 
+
+https://github.com/PrioteasaAndrei/tema-asc-1.git
