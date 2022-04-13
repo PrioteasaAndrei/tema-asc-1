@@ -192,16 +192,18 @@ class Marketplace:
         buf = 'remove_from_cart: cart_id {} product {}'.format(cart_id,product)
         self.logger.info(buf)
 
-        for basket_product,original_producer_id in self.consumer_baskets[cart_id]:
-            if basket_product == product:
-                self.consumer_baskets[cart_id].remove((product,original_producer_id))
-                buf = '\tRemoved {} of {} from {}'.format(product,original_producer_id,cart_id)
-                self.logger.info(buf)
-                index = self.products_queue[original_producer_id].index((product,cart_id))
-                self.products_queue[original_producer_id][index] = (product,-77)
-                buf = 'Unclaimed product {} of {}'.format(product,original_producer_id)
-                self.logger.info(buf)
-                break
+        with self.lock_add_cart:
+
+            for basket_product,original_producer_id in self.consumer_baskets[cart_id]:
+                if basket_product == product:
+                    self.consumer_baskets[cart_id].remove((product,original_producer_id))
+                    buf = '\tRemoved {} of {} from {}'.format(product,original_producer_id,cart_id)
+                    self.logger.info(buf)
+                    index = self.products_queue[original_producer_id].index((product,cart_id))
+                    self.products_queue[original_producer_id][index] = (product,-77)
+                    buf = 'Unclaimed product {} of {}'.format(product,original_producer_id)
+                    self.logger.info(buf)
+                    break
 
 
     def place_order(self, cart_id):
@@ -215,20 +217,22 @@ class Marketplace:
         buf = 'place_order: cart_id {}'.format(cart_id)
         self.logger.info(buf)
 
-        ret = [] 
+        with self.lock_add_cart:
 
-        for product,original_producer_id in self.consumer_baskets[cart_id]:
+            ret = [] 
 
-            self.products_queue[original_producer_id].remove((product,cart_id))
-            buf = '\tRemoved {} from {} queue because an order is placed'.format(product,original_producer_id)
-            self.logger.info(buf)
-            ret.append(product)
-            buf = "cons%d bought %s\n" % (cart_id+1,product)
-            print(buf)
-            
-        self.consumer_baskets[cart_id] = [] 
+            for product,original_producer_id in self.consumer_baskets[cart_id]:
 
-        return ret 
+                self.products_queue[original_producer_id].remove((product,cart_id))
+                buf = '\tRemoved {} from {} queue because an order is placed'.format(product,original_producer_id)
+                self.logger.info(buf)
+                ret.append(product)
+                buf = "cons%d bought %s\n" % (cart_id+1,product)
+                print(buf)
+                
+            self.consumer_baskets[cart_id] = [] 
+
+            return ret 
 
 
 
